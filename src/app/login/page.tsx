@@ -1,13 +1,15 @@
-﻿import { redirect } from 'next/navigation';
+import { redirect } from 'next/navigation';
 
 import { SignInForm } from '@/components/auth/sign-in-form';
 import { getCurrentUser } from '@/lib/auth';
+import { normalizeRedirectPath } from '@/lib/redirect';
 
-export default async function LoginPage({ searchParams }: { searchParams?: { error?: string } }) {
+export default async function LoginPage({ searchParams }: { searchParams?: { error?: string; next?: string } }) {
   const user = await getCurrentUser();
+  const next = normalizeRedirectPath(searchParams?.next);
 
   if (user) {
-    redirect('/');
+    redirect(next);
   }
 
   return (
@@ -19,7 +21,7 @@ export default async function LoginPage({ searchParams }: { searchParams?: { err
           PromptCache is now wired to Supabase auth. Use your email to get a one-click sign-in link, then you will land back in the app with a live session.
         </p>
         <div className="mt-8">
-          <SignInForm />
+          <SignInForm next={next} />
           {searchParams?.error ? <p className="mt-4 text-sm text-ember">{searchParams.error}</p> : null}
         </div>
       </section>

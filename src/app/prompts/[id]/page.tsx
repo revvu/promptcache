@@ -8,7 +8,7 @@ import { formatRelative } from '@/lib/demo-data';
 import { getPromptDetail } from '@/lib/data';
 
 export default async function PromptDetailPage({ params, searchParams }: { params: { id: string }; searchParams?: { saved?: string; error?: string } }) {
-  const user = await requireUser();
+  const user = await requireUser(`/prompts/${params.id}`);
   const { prompt, databaseConnected } = await getPromptDetail(user.id, params.id);
 
   if (!prompt) {

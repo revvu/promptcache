@@ -1,10 +1,10 @@
-﻿'use client';
+'use client';
 
 import { useMemo, useState } from 'react';
 
 import { createSupabaseBrowserClient } from '@/lib/supabase/browser';
 
-export function SignInForm() {
+export function SignInForm({ next = '/' }: { next?: string }) {
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState('');
@@ -15,11 +15,13 @@ export function SignInForm() {
     setStatus('loading');
     setMessage('Sending your magic link...');
 
-    const redirectTo = `${window.location.origin}/auth/callback`;
+    const redirectTo = new URL('/auth/callback', window.location.origin);
+    redirectTo.searchParams.set('next', next);
+
     const { error } = await supabase.auth.signInWithOtp({
       email,
       options: {
-        emailRedirectTo: redirectTo
+        emailRedirectTo: redirectTo.toString()
       }
     });
 

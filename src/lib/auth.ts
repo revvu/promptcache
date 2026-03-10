@@ -1,5 +1,6 @@
-﻿import { redirect } from 'next/navigation';
+import { redirect } from 'next/navigation';
 
+import { normalizeRedirectPath } from '@/lib/redirect';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 
 export async function getCurrentUser() {
@@ -11,11 +12,11 @@ export async function getCurrentUser() {
   return user;
 }
 
-export async function requireUser() {
+export async function requireUser(next?: string) {
   const user = await getCurrentUser();
 
   if (!user) {
-    redirect('/login');
+    redirect(`/login?next=${encodeURIComponent(normalizeRedirectPath(next))}`);
   }
 
   return user;

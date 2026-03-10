@@ -1,5 +1,7 @@
-﻿import { createServerClient } from '@supabase/ssr';
+import { createServerClient } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
+
+import { normalizeRedirectPath } from '@/lib/redirect';
 
 export async function middleware(request: NextRequest) {
   let response = NextResponse.next({ request });
@@ -38,13 +40,21 @@ export async function middleware(request: NextRequest) {
 
   if (!user && isProtectedRoute) {
     const url = request.nextUrl.clone();
+    const next = normalizeRedirectPath(`${request.nextUrl.pathname}${request.nextUrl.search}`);
+
     url.pathname = '/login';
+    url.search = '';
+    url.searchParams.set('next', next);
+
     return NextResponse.redirect(url);
   }
 
   if (user && request.nextUrl.pathname === '/login') {
     const url = request.nextUrl.clone();
-    url.pathname = '/';
+
+    url.pathname = normalizeRedirectPath(request.nextUrl.searchParams.get('next'));
+    url.search = '';
+
     return NextResponse.redirect(url);
   }
 

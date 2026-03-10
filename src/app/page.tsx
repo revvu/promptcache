@@ -6,7 +6,7 @@ import { getDashboardData } from '@/lib/data';
 import { requireUser } from '@/lib/auth';
 
 export default async function HomePage() {
-  const user = await requireUser();
+  const user = await requireUser('/');
   const data = await getDashboardData(user.id);
 
   return (

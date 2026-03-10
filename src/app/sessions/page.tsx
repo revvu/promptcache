@@ -5,7 +5,7 @@ import { formatRelative } from '@/lib/demo-data';
 import { getSessions } from '@/lib/data';
 
 export default async function SessionsPage({ searchParams }: { searchParams?: { created?: string; error?: string } }) {
-  const user = await requireUser();
+  const user = await requireUser('/sessions');
   const { sessions, databaseConnected } = await getSessions(user.id);
 
   return (

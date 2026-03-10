@@ -22,7 +22,7 @@ The repository now contains:
 
 1. Install dependencies with `npm install`
 2. Copy `.env.example` to `.env.local`
-3. Fill in your Supabase and OpenAI keys
+3. Fill in your Supabase keys
 4. Run `npm run dev`
 
 ## Key Files

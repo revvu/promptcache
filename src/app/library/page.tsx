@@ -7,7 +7,7 @@ import { formatRelative } from '@/lib/demo-data';
 import { getPrompts } from '@/lib/data';
 
 export default async function LibraryPage({ searchParams }: { searchParams?: { q?: string; created?: string; error?: string } }) {
-  const user = await requireUser();
+  const user = await requireUser(`/library${searchParams?.q ? `?q=${encodeURIComponent(searchParams.q)}` : ''}`);
   const query = searchParams?.q?.trim() ?? '';
   const { prompts, databaseConnected } = await getPrompts(user.id, query);
 
@@ -16,7 +16,7 @@ export default async function LibraryPage({ searchParams }: { searchParams?: { q
       currentPath="/library"
       eyebrow="Library"
       title="Store prompts with enough structure to make reuse easy."
-      description="Capture prompts with tags, constraints, and notes. Search them later by keyword now, and by embeddings once vector jobs are online."
+      description="Capture prompts with tags, constraints, and notes. Search them later by keyword across titles, bodies, and tags."
       databaseConnected={databaseConnected}
       user={user}
     >

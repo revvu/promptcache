@@ -3,7 +3,7 @@ import { requireUser } from '@/lib/auth';
 import { getWorkshopResult } from '@/lib/data';
 
 export default async function WorkshopPage({ searchParams }: { searchParams?: { draft?: string } }) {
-  const user = await requireUser();
+  const user = await requireUser(`/workshop${searchParams?.draft ? `?draft=${encodeURIComponent(searchParams.draft)}` : ''}`);
   const draft = searchParams?.draft?.trim() ?? 'You are helping me refine a prompt for a code migration. Ask for missing context, then produce a migration plan with risks, test strategy, and rollback notes.';
   const result = await getWorkshopResult(draft);
 
@@ -12,7 +12,7 @@ export default async function WorkshopPage({ searchParams }: { searchParams?: { 
       currentPath="/workshop"
       eyebrow="Workshop"
       title="Improve prompts while you write them."
-      description="This screen is ready for a live provider call later. Right now it falls back to a structured local enhancement pass when no model key is configured."
+      description="This screen uses a structured local enhancement pass for now, so no model provider key is required."
       databaseConnected={Boolean(process.env.DATABASE_URL)}
       user={user}
     >

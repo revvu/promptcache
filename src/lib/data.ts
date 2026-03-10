@@ -88,7 +88,15 @@ export async function getPrompts(userId: string, query?: string): Promise<{ prom
             favorite, status, created_at::text as "createdAt", updated_at::text as "updatedAt"
           from prompts
           where user_id = ${userId}::uuid
-            and (title ilike ${`%${query}%`} or body ilike ${`%${query}%`})
+            and (
+              title ilike ${`%${query}%`}
+              or body ilike ${`%${query}%`}
+              or exists (
+                select 1
+                from jsonb_array_elements_text(coalesce(tags, '[]'::jsonb)) as tag(value)
+                where tag.value ilike ${`%${query}%`}
+              )
+            )
           order by updated_at desc
         `
       : await db<PromptSummary[]>`
@@ -229,9 +237,5 @@ export async function addPromptResponse(userId: string, input: { promptId: strin
 }
 
 export async function getWorkshopResult(input: string): Promise<WorkshopResult> {
-  if (!process.env.OPENAI_API_KEY) {
-    return improvePrompt(input);
-  }
-
-  return demoWorkshopResult;
+  return improvePrompt(input);
 }

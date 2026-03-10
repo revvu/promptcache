@@ -7,7 +7,6 @@ Copy `.env.example` to `.env.local` and fill in:
 - `NEXT_PUBLIC_SUPABASE_URL`
 - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
 - `DATABASE_URL`
-- `OPENAI_API_KEY`
 
 ## Supabase
 
@@ -18,10 +17,9 @@ Copy `.env.example` to `.env.local` and fill in:
 
 ## Recommended MCP / Integration Order
 
-1. LLM provider for workshop improve and critique actions
-2. Embedding provider for semantic prompt search
-3. Filesystem or repo context MCP for coding prompts
-4. Skill promotion layer for turning successful prompts into reusable skill drafts
+1. Filesystem or repo context MCP for coding prompts
+2. Skill promotion layer for turning successful prompts into reusable skill drafts
+3. Embedding provider for semantic prompt search when needed
 
 ## First Build Targets
 

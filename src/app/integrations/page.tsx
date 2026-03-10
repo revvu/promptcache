@@ -3,14 +3,14 @@ import { requireUser } from '@/lib/auth';
 
 const integrations = [
   {
-    name: 'Provider layer',
-    status: process.env.OPENAI_API_KEY ? 'Configured' : 'Pending key',
-    detail: 'Use this for workshop improve and critique actions. OpenAI key is optional until you want live enhancements.'
-  },
-  {
     name: 'Postgres + pgvector',
     status: process.env.DATABASE_URL ? 'Configured' : 'Missing URL',
-    detail: 'This powers prompt storage, sessions, response capture, and semantic retrieval once the DB host resolves.'
+    detail: 'This powers prompt storage, sessions, response capture, and leaves room for semantic retrieval later.'
+  },
+  {
+    name: 'Local workshop enhancer',
+    status: 'Enabled',
+    detail: 'Prompt improvement currently runs through an in-app structured pass instead of a live model provider.'
   },
   {
     name: 'MCP adapters',
@@ -20,7 +20,7 @@ const integrations = [
 ];
 
 export default async function IntegrationsPage() {
-  const user = await requireUser();
+  const user = await requireUser('/integrations');
 
   return (
     <AppShell
